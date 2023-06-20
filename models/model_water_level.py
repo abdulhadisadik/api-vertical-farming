@@ -10,13 +10,13 @@ class FuzzyController:
         ketinggian['tinggi'] = fuzz.trimf(ketinggian.universe, [449, 450, 599])
 
         # Membuat variabel output
-        aksi_pompa = ctrl.Consequent(np.arange(0, 2, 1), 'aksi_pompa')
-        aksi_pompa['nyala'] = fuzz.trimf(aksi_pompa.universe, [0, 0, 0.5])
-        aksi_pompa['mati'] = fuzz.trimf(aksi_pompa.universe, [0.5, 1, 1])
+        aksi_selenoid = ctrl.Consequent(np.arange(0, 2, 1), 'aksi_selenoid')
+        aksi_selenoid['nyala'] = fuzz.trimf(aksi_selenoid.universe, [0, 0, 0.5])
+        aksi_selenoid['mati'] = fuzz.trimf(aksi_selenoid.universe, [0.5, 1, 1])
 
         # Aturan fuzzy
-        aturan = ctrl.Rule(ketinggian['rendah'], aksi_pompa['nyala'])
-        aturan2 = ctrl.Rule(ketinggian['tinggi'], aksi_pompa['mati'])
+        aturan = ctrl.Rule(ketinggian['rendah'], aksi_selenoid['nyala'])
+        aturan2 = ctrl.Rule(ketinggian['tinggi'], aksi_selenoid['mati'])
 
         # Membuat sistem kontrol fuzzy
         self.simulasi = ctrl.ControlSystem([aturan, aturan2])
@@ -30,6 +30,6 @@ class FuzzyController:
         self.hasil.compute()
 
         # Mendapatkan aksi pada variabel output
-        aksi = self.hasil.output['aksi_pompa']
+        aksi = self.hasil.output['aksi_selenoid']
 
         return aksi

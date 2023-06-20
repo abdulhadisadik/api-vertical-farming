@@ -15,9 +15,9 @@ def fuzzy_controller():
 
     # Tentukan respons berdasarkan aksi
     if aksi <= 0.5:
-        response = "nyalain dong"
+        response = 1
     else:
-        response = "Matiin dong"
+        response = 0
 
     return {
         "aksi_pompa": aksi,
