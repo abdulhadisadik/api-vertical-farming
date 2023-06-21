@@ -4,7 +4,7 @@ from models.model_water_level import WaterFuzzyController
 from models.model_lux import LuxFuzzyController
 from models.model_suhu import SuhuFuzzyController
 from models.model_humidifier import HumFuzzyController
-
+from models.Model_pHTanah import TanahFuzzyController
 
 app = Flask(__name__)
 
@@ -30,7 +30,7 @@ def water_fuzzy_controller():
      
 
     return {
-        "aksi_pompa": aksi,
+        "aksi_selenoid": aksi,
         "response": response
     }
 
@@ -79,7 +79,7 @@ def suhu_fuzzy_controller():
      
 
     return {
-        "aksi_pompa": aksi,
+        "aksi_kipas": aksi,
         "response": response
     }
 
@@ -103,7 +103,31 @@ def hum_fuzzy_controller():
         response = 0
      
     return {
-        "aksi_pompa": aksi,
+        "aksi_hum": aksi,
+        "response": response
+    }
+
+
+#API PhTanah
+@app.route('/phtanah', methods=['POST'])
+def tanah_fuzzy_controller():
+    # Ambil nilai ketinggian dari permintaan POST
+    data = request.get_json()
+    nilai_tanah = data['tanah']
+ 
+    # Menghitung aksi menggunakan objek FuzzyController
+    controller = TanahFuzzyController()
+    aksi = controller.compute_action(nilai_tanah)
+
+
+    # Tentukan respons berdasarkan aksi
+    if aksi < 1:
+        response = 1
+    else:
+        response = 0
+     
+    return {
+        "aksi_selenoid": aksi,
         "response": response
     }
 
