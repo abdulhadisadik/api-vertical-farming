@@ -4,32 +4,44 @@ from skfuzzy import control as ctrl
 
 class FuzzyController:
     def __init__(self):
-        # Membuat variabel input
-        ketinggian = ctrl.Antecedent(np.arange(0, 601, 1), 'ketinggian')
-        ketinggian['rendah'] = fuzz.trimf(ketinggian.universe, [0, 0, 449])
-        ketinggian['tinggi'] = fuzz.trimf(ketinggian.universe, [449, 450, 599])
+        # Langkah 1: Menentukan Variabel Masukan dan Variabel Keluaran
+        ketinggian_air = ctrl.Antecedent(np.arange(0, 600, 1), 'ketinggian')
+        aksi = ctrl.Consequent(np.arange(0, 2.1, 0.1), 'aksi')
 
-        # Membuat variabel output
-        aksi_selenoid = ctrl.Consequent(np.arange(0, 2, 1), 'aksi_selenoid')
-        aksi_selenoid['nyala'] = fuzz.trimf(aksi_selenoid.universe, [0, 0, 0.5])
-        aksi_selenoid['mati'] = fuzz.trimf(aksi_selenoid.universe, [0.5, 1, 1])
+        # Langkah 2: Menentukan Fungsi Keanggotaan
+        ketinggian_air['rendah'] = fuzz.trimf(ketinggian_air.universe, [0, 0, 299.1])
+        ketinggian_air['sedang'] = fuzz.trimf(ketinggian_air.universe, [299.1, 400, 450.1])
+        ketinggian_air['tinggi'] = fuzz.trimf(ketinggian_air.universe, [450.1, 600, 600])
 
-        # Aturan fuzzy
-        aturan = ctrl.Rule(ketinggian['rendah'], aksi_selenoid['nyala'])
-        aturan2 = ctrl.Rule(ketinggian['tinggi'], aksi_selenoid['mati'])
+        aksi['pompa'] = fuzz.trimf(aksi.universe, [0, 0, 0.5])
+        aksi['biarkan'] = fuzz.trimf(aksi.universe, [0, 1, 1])
+        aksi['matikan'] = fuzz.trimf(aksi.universe, [1, 1, 2])
 
-        # Membuat sistem kontrol fuzzy
-        self.simulasi = ctrl.ControlSystem([aturan, aturan2])
-        self.hasil = ctrl.ControlSystemSimulation(self.simulasi)
+
+
+        # Langkah 3: Menentukan Aturan Fuzzy Sugeno
+        rule1 = ctrl.Rule(ketinggian_air['rendah'], aksi['pompa'])
+        rule2 = ctrl.Rule(ketinggian_air['sedang'], aksi['biarkan'])
+        rule3 = ctrl.Rule(ketinggian_air['tinggi'], aksi['matikan'])
+
+        # Menggabungkan aturan fuzzy Sugeno
+        self.sistem_pengambilan_keputusan = ctrl.ControlSystem([rule1, rule2, rule3])
+
+        # Langkah 4: Melakukan Inferensi Fuzzy Sugeno
+        self.pengambilan_keputusan = ctrl.ControlSystemSimulation(self.sistem_pengambilan_keputusan)
+
+  
+
+
 
     def compute_action(self, nilai_ketinggian):
-        # Input nilai ketinggian
-        self.hasil.input['ketinggian'] = nilai_ketinggian
+    # Input nilai ketinggian
+        self.pengambilan_keputusan.input['ketinggian'] = nilai_ketinggian
 
         # Menjalankan simulasi sistem kontrol fuzzy
-        self.hasil.compute()
+        self.pengambilan_keputusan.compute()
 
-        # Mendapatkan aksi pada variabel output
-        aksi = self.hasil.output['aksi_selenoid']
-
+        # Defuzzifikasi
+        aksi = self.pengambilan_keputusan.output['aksi']
+        print(aksi)  # Output: nilai crisp hasil perhitungan
         return aksi

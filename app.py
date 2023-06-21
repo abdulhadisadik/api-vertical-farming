@@ -1,4 +1,5 @@
 from flask import Flask, request
+# from models.model_water_level import FuzzyController
 from models.model_water_level import FuzzyController
 
 app = Flask(__name__)
@@ -13,11 +14,15 @@ def fuzzy_controller():
     controller = FuzzyController()
     aksi = controller.compute_action(nilai_ketinggian)
 
+
     # Tentukan respons berdasarkan aksi
+    if aksi > 1.0:
+        response = 0
+    if aksi > 0.5 and aksi <= 1.0:
+        response = 1
     if aksi <= 0.5:
-        response = 1 
-    else:
-        response = 0 
+        response = 1
+     
 
     return {
         "aksi_pompa": aksi,
