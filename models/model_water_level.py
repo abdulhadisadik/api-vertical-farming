@@ -2,7 +2,7 @@ import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
-class FuzzyController:
+class WaterFuzzyController:
     def __init__(self):
         # Langkah 1: Menentukan Variabel Masukan dan Variabel Keluaran
         ketinggian_air = ctrl.Antecedent(np.arange(0, 600, 1), 'ketinggian')
