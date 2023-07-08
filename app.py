@@ -48,16 +48,25 @@ def lux_fuzzy_controller():
     # Menghitung aksi menggunakan objek FuzzyController
     controller = LuxFuzzyController()
     aksi = controller.compute_action(nilai_lux)
+    if nilai_lux <200:
+        kategori = "Sangat Rendah"
+    elif nilai_lux >=200 and  nilai_lux<400:
+        kategori ="Rendah"
+    elif nilai_lux >=400 and nilai_lux<700:
+        kategori="Normal"
+    elif nilai_lux >=700 and nilai_lux <800:
+        kategori = "Tinggi"
+    elif nilai_lux >=800:
+        kategori = "Sangat Tinggi"
+
+
     # Tentukan respon berdasarakn aksi
     if aksi > 1.0:
         response = 0
-        kategori = "Tinggi"
     if aksi > 0.5 and aksi <= 1.0:
         response = 0
-        kategori = "Sedang"
     if aksi <= 0.5:
         response = 1
-        kategori = "Rendah"
 
     return {
         "aksi_cahaya": aksi,
@@ -79,9 +88,9 @@ def suhu_fuzzy_controller():
     aksi = controller.compute_action(nilai_suhu)
 
 
-    if nilai_suhu < 20:
+    if nilai_suhu < 25:
         kategori = "Rendah"
-    elif nilai_suhu >=20 and nilai_suhu<=33:
+    elif nilai_suhu >=25 and nilai_suhu<=33:
         kategori ="Sedang"
     elif nilai_suhu > 33:
         kategori = "Tinggi"
@@ -112,11 +121,11 @@ def hum_fuzzy_controller():
     aksi = controller.compute_action(nilai_kelembaban)
 
 
-    if nilai_kelembaban < 70:
+    if nilai_kelembaban < 63:
         kategori = "Rendah"
-    elif nilai_kelembaban >=70 and nilai_kelembaban<=85:
+    elif nilai_kelembaban >=63 and nilai_kelembaban<=80:
         kategori ="Sedang"
-    elif nilai_kelembaban > 85:
+    elif nilai_kelembaban > 80:
         kategori = "Tinggi"
 
     # Tentukan respons berdasarkan aksi
