@@ -32,8 +32,9 @@ def water_fuzzy_controller():
 
     return {
         "aksi_selenoid": aksi,
-        "response": response,
-        "kategori": kategori
+        "kategori": kategori,
+        "response": response
+        
     }
 
 
@@ -60,8 +61,9 @@ def lux_fuzzy_controller():
 
     return {
         "aksi_cahaya": aksi,
-        "response": response,
-        "kategori" : kategori
+        "kategori" : kategori,
+        "response": response
+        
     }
 
 
@@ -92,8 +94,9 @@ def suhu_fuzzy_controller():
 
     return {
         "aksi_kipas": aksi,
-        "response": response,
-        "kategori" : kategori
+         "kategori" : kategori,
+        "response": response
+       
     }
 
 
@@ -124,8 +127,9 @@ def hum_fuzzy_controller():
      
     return {
         "aksi_hum": aksi,
-        "response": response,
-        "Kategori" : kategori
+         "kategori" : kategori,
+        "response": response
+       
     }
 
 
@@ -153,8 +157,9 @@ def tanah_fuzzy_controller():
         kategori = "Basa"
     return {
         "aksi_selenoid": aksi,
-        "response": response,
-        'kategori':kategori
+        'kategori':kategori,
+        "response": response
+        
     }
 
 
