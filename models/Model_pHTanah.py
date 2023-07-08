@@ -8,10 +8,10 @@ class TanahFuzzyController:
         soil_pH = ctrl.Antecedent(np.arange(0, 14.1, 0.1), 'soil_pH')
         action = ctrl.Consequent(np.arange(0, 2.1, 0.1), 'action')
 
-        # Step 2: Define Membership Functions
-        soil_pH['asam'] = fuzz.trimf(soil_pH.universe, [0, 0, 4.51])
-        soil_pH['optimal'] = fuzz.trimf(soil_pH.universe, [4.51, 6.75, 7.5])
-        soil_pH['basa'] = fuzz.trimf(soil_pH.universe, [7.5, 8, 14])
+              # Step 2: Define Membership Functions
+        soil_pH['asam'] = fuzz.trimf(soil_pH.universe, [0, 5, 6])
+        soil_pH['optimal'] = fuzz.trimf(soil_pH.universe, [5, 6.5, 8])
+        soil_pH['basa'] = fuzz.trimf(soil_pH.universe, [7, 8, 14])
 
         action['solenoid_on'] = fuzz.trimf(action.universe, [0, 0, 1])
         action['solenoid_op'] = fuzz.trimf(action.universe, [1 ,1 ,1]) 

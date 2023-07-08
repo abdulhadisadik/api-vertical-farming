@@ -1,5 +1,4 @@
 from flask import Flask, request
-# from models.model_water_level import FuzzyController
 from models.model_water_level import WaterFuzzyController
 from models.model_lux import LuxFuzzyController
 from models.model_suhu import SuhuFuzzyController
@@ -23,15 +22,18 @@ def water_fuzzy_controller():
     # Tentukan respons berdasarkan aksi
     if aksi > 1.0:
         response = 0
+        kategori = "Tinggi "
     if aksi > 0.5 and aksi <= 1.0:
         response = 1
+        kategori = "Sedang"
     if aksi <= 0.5:
         response = 1
-     
+        kategori = "Rendah"
 
     return {
         "aksi_selenoid": aksi,
-        "response": response
+        "response": response,
+        "kategori": kategori
     }
 
 
@@ -48,14 +50,18 @@ def lux_fuzzy_controller():
     # Tentukan respon berdasarakn aksi
     if aksi > 1.0:
         response = 0
+        kategori = "Tinggi"
     if aksi > 0.5 and aksi <= 1.0:
         response = 0
+        kategori = "Sedang"
     if aksi <= 0.5:
         response = 1
+        kategori = "Rendah"
 
     return {
         "aksi_cahaya": aksi,
-        "response": response
+        "response": response,
+        "kategori" : kategori
     }
 
 
@@ -71,6 +77,12 @@ def suhu_fuzzy_controller():
     aksi = controller.compute_action(nilai_suhu)
 
 
+    if nilai_suhu < 20:
+        kategori = "Rendah"
+    elif nilai_suhu >=20 and nilai_suhu<=33:
+        kategori ="Sedang"
+    elif nilai_suhu > 33:
+        kategori = "Tinggi"
     # Tentukan respons berdasarkan aksi
     if aksi > 0.5:
         response = 1
@@ -80,7 +92,8 @@ def suhu_fuzzy_controller():
 
     return {
         "aksi_kipas": aksi,
-        "response": response
+        "response": response,
+        "kategori" : kategori
     }
 
 
@@ -96,6 +109,13 @@ def hum_fuzzy_controller():
     aksi = controller.compute_action(nilai_kelembaban)
 
 
+    if nilai_kelembaban < 70:
+        kategori = "Rendah"
+    elif nilai_kelembaban >=70 and nilai_kelembaban<=85:
+        kategori ="Sedang"
+    elif nilai_kelembaban > 85:
+        kategori = "Tinggi"
+
     # Tentukan respons berdasarkan aksi
     if aksi > 0.5:
         response = 1
@@ -104,7 +124,8 @@ def hum_fuzzy_controller():
      
     return {
         "aksi_hum": aksi,
-        "response": response
+        "response": response,
+        "Kategori" : kategori
     }
 
 
@@ -123,12 +144,17 @@ def tanah_fuzzy_controller():
     # Tentukan respons berdasarkan aksi
     if aksi < 1:
         response = 1
-    else:
+        kategori = "Asam"
+    elif aksi == 1:
         response = 0
-     
+        kategori = "Optimal"
+    elif aksi > 1:
+        response = 0
+        kategori = "Basa"
     return {
         "aksi_selenoid": aksi,
-        "response": response
+        "response": response,
+        'kategori':kategori
     }
 
 

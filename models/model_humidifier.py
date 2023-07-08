@@ -5,16 +5,16 @@ from skfuzzy import control as ctrl
 class HumFuzzyController:
     def __init__(self):
         # Langkah 1: Menentukan Variabel Masukan dan Variabel Keluaran
+# Fuzzifikasi
         kelembaban = ctrl.Antecedent(np.arange(0, 101, 1), 'kelembaban')
-        aksi_humidifier = ctrl.Consequent(np.arange(0, 2, 1), 'aksi_humidifier')
+        aksi_humidifier = ctrl.Consequent(np.arange(0, 1.01, 0.01), 'aksi_humidifier')
+        # Definisi fungsi keanggotaan untuk kelembaban
+        kelembaban['rendah'] = fuzz.trimf(kelembaban.universe, [0, 0, 70.1])
+        kelembaban['sedang'] = fuzz.trimf(kelembaban.universe, [70, 77, 85.1])
+        kelembaban['tinggi'] = fuzz.trimf(kelembaban.universe, [86.1, 100, 100.1])
 
-        # Langkah 2: Menentukan Fungsi Keanggotaan
-        kelembaban['rendah'] = fuzz.trimf(kelembaban.universe, [0, 0, 69.9])
-        kelembaban['sedang'] = fuzz.trimf(kelembaban.universe, [69.9, 75.1, 80.1])
-        kelembaban['tinggi'] = fuzz.trimf(kelembaban.universe, [80.1, 100, 100])
-
-        aksi_humidifier['mati'] = fuzz.trimf(aksi_humidifier.universe, [0, 0, 0])
-        aksi_humidifier['hidup'] = fuzz.trimf(aksi_humidifier.universe, [1, 1, 1])
+        aksi_humidifier['mati'] = fuzz.trimf(aksi_humidifier.universe, [0, 0, 0.5])
+        aksi_humidifier['hidup'] = fuzz.trimf(aksi_humidifier.universe, [0.5, 1, 1])
 
         # Langkah 3: Menentukan Aturan Fuzzy
         rule1 = ctrl.Rule(kelembaban['rendah'], aksi_humidifier['hidup'])

@@ -5,16 +5,17 @@ from skfuzzy import control as ctrl
 class SuhuFuzzyController:
     def __init__(self):
         # Langkah 1: Menentukan Variabel Masukan dan Variabel Keluaran
-        suhu = ctrl.Antecedent(np.arange(0, 101, 1), 'suhu')
-        aksi_kipas = ctrl.Consequent(np.arange(0, 2, 1), 'aksi_kipas')
+        # Fuzzifikasi
+        suhu = ctrl.Antecedent(np.arange(0, 51, 1), 'suhu')
+        aksi_kipas = ctrl.Consequent(np.arange(0, 1.01, 0.01), 'aksi_kipas')
 
         # Langkah 2: Menentukan Fungsi Keanggotaan
         suhu['rendah'] = fuzz.trimf(suhu.universe, [0, 0, 20.1])
-        suhu['sedang'] = fuzz.trimf(suhu.universe, [20.1, 26, 33.1])
-        suhu['tinggi'] = fuzz.trimf(suhu.universe, [33.1, 50, 50])
+        suhu['sedang'] = fuzz.trimf(suhu.universe, [20.1, 26, 32.1])
+        suhu['tinggi'] = fuzz.trimf(suhu.universe, [33.1, 50, 50.1])
 
-        aksi_kipas['mati'] = fuzz.trimf(aksi_kipas.universe, [0, 0, 0])
-        aksi_kipas['hidup'] = fuzz.trimf(aksi_kipas.universe, [1, 1, 1])
+        aksi_kipas['mati'] = fuzz.trimf(aksi_kipas.universe, [0, 0, 0.5])
+        aksi_kipas['hidup'] = fuzz.trimf(aksi_kipas.universe, [0.5, 1, 1])
 
         # Langkah 3: Menentukan Aturan Fuzzy
         rule1 = ctrl.Rule(suhu['rendah'], aksi_kipas['mati'])
