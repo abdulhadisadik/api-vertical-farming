@@ -7,20 +7,19 @@ class SuhuFuzzyController:
         # Langkah 1: Menentukan Variabel Masukan dan Variabel Keluaran
         # Fuzzifikasi
         suhu = ctrl.Antecedent(np.arange(0, 51, 1), 'suhu')
-        aksi_kipas = ctrl.Consequent(np.arange(0, 1.01, 0.01), 'aksi_kipas')
+        kipas = ctrl.Consequent(np.arange(0, 1.01, 0.01), 'kipas')
 
-        # Langkah 2: Menentukan Fungsi Keanggotaan
-        suhu['rendah'] = fuzz.trimf(suhu.universe, [0, 0, 20.1])
-        suhu['sedang'] = fuzz.trimf(suhu.universe, [20.1, 26, 32.1])
-        suhu['tinggi'] = fuzz.trimf(suhu.universe, [33.1, 50, 50.1])
+        suhu['rendah'] = fuzz.trapmf(suhu.universe, [0, 0, 25, 30])
+        suhu['sedang'] = fuzz.trimf(suhu.universe, [25, 30, 35])
+        suhu['tinggi'] = fuzz.trapmf(suhu.universe, [30, 35, 50, 50])
 
-        aksi_kipas['mati'] = fuzz.trimf(aksi_kipas.universe, [0, 0, 0.5])
-        aksi_kipas['hidup'] = fuzz.trimf(aksi_kipas.universe, [0.5, 1, 1])
+        kipas['OFF'] = fuzz.trimf(kipas.universe, [0, 0, 1])
+        kipas['ON'] = fuzz.trimf(kipas.universe, [0, 1, 1])
 
-        # Langkah 3: Menentukan Aturan Fuzzy
-        rule1 = ctrl.Rule(suhu['rendah'], aksi_kipas['mati'])
-        rule2 = ctrl.Rule(suhu['sedang'], aksi_kipas['mati'])
-        rule3 = ctrl.Rule(suhu['tinggi'], aksi_kipas['hidup'])
+        # Rules
+        rule1 = ctrl.Rule(suhu['rendah'], [kipas['OFF']])
+        rule2 = ctrl.Rule(suhu['sedang'], [kipas['OFF']])
+        rule3 = ctrl.Rule(suhu['tinggi'], [kipas['ON']])
 
         # Menggabungkan aturan fuzzy
         self.sistem_pengambilan_keputusan = ctrl.ControlSystem([rule1, rule2, rule3])
@@ -36,7 +35,7 @@ class SuhuFuzzyController:
         self.pengambilan_keputusan.compute()
 
         # Defuzzifikasi
-        aksi_kipas = self.pengambilan_keputusan.output['aksi_kipas']
-        return aksi_kipas
+        kipas = self.pengambilan_keputusan.output['kipas']
+        return kipas
 
 
