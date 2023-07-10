@@ -31,7 +31,7 @@ def water_fuzzy_controller():
         kategori = "Rendah"
 
     return {
-        "aksi_selenoid": aksi,
+        "aksi_waterlevel": aksi,
         "kategori": kategori,
         "response": response
         
@@ -165,7 +165,7 @@ def tanah_fuzzy_controller():
         response = 0
         kategori = "Basa"
     return {
-        "aksi_selenoid": aksi,
+        "aksi_soilph": aksi,
         'kategori':kategori,
         "response": response
         
