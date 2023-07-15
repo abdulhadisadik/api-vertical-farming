@@ -24,7 +24,7 @@ def water_fuzzy_controller():
         response = 0
         kategori = "Tinggi "
     if aksi > 0.5 and aksi <= 1.0:
-        response = 1
+        response = 0
         kategori = "Sedang"
     if aksi <= 0.5:
         response = 1
